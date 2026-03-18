@@ -1,0 +1,40 @@
+services:
+  # El motor de modelos locales (Gratis para programar)
+  ollama:
+    image: ollama/ollama
+    container_name: mentor_ollama
+    volumes:
+      - ./ollama_data:/root/.ollama
+    restart: always
+
+  # El Agente Mentor (Script personalizado)
+  tesis-mentor:
+    image: python:3.11-slim
+    container_name: kairos_mentor_agent
+    volumes:
+      - ./docs_psicologia:/app/documentos
+      - ./docs_tecnicos:/app/docs_tecnicos
+      - ./agente:/app/agente
+      - .:/app/contexto                   # Anteproyecto-Kairos.pdf [cite: 5]
+      - .:/app/raiz_proyecto
+    env_file:
+      - .env
+    depends_on:
+      - ollama
+    command: >
+      sh -c "pip install --no-cache-dir -r /app/raiz_proyecto/requirements.txt && 
+              python /app/agente/bot.py"
+    restart: always
+
+  # OpenClaw: El Agente Autónomo de Desarrollo
+  openclaw:
+    image: ghcr.io/openclaw/openclaw:latest
+    container_name: kairos_openclaw
+    volumes:
+      - .:/app/project
+      - ./openclaw_data:/app/data
+    env_file:
+      - .env
+    depends_on:
+      - ollama
+    restart: always

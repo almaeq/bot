@@ -1,0 +1,16 @@
+# Interfaz con Telegram
+pyTelegramBotAPI
+
+# IA y Procesamiento de Lenguaje
+google-generativeai
+
+# Utilidades para Scraping de Documentación (Android/Spring)
+beautifulsoup4
+requests
+
+# Procesamiento de PDFs (Para que el mentor lea tu bibliografía)
+PyPDF2
+
+dotenv
+
+google-genai
